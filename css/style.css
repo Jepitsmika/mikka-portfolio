@@ -1,0 +1,703 @@
+/* ==========================================================================
+   MIKKA - Avant-Garde Photography Portfolio
+   Styles: Pure CSS3, Modern Grid & Flexbox, No Gradients
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Custom Properties (Design Tokens)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Color Palette - Monochromatic, Strict No Gradients */
+  --bg-primary: #f5f5f5;
+  --bg-sidebar: #f5f5f5;
+  --bg-dark: #0a0a0a;
+  --bg-surface: #eaeaea;
+  --bg-lightbox: rgba(10, 10, 10, 0.95);
+
+  --text-primary: #0a0a0a;
+  --text-muted: #666666;
+  --text-inverse: #ffffff;
+  --text-inverse-muted: rgba(255, 255, 255, 0.6);
+
+  --border-color: #dfdfdf;
+  --border-light: rgba(10, 10, 10, 0.08);
+  --border-dark: rgba(255, 255, 255, 0.15);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --mobile-header-height: 60px;
+  --grid-gap: 48px;
+  --max-content-width: 1600px;
+
+  /* Typography */
+  --font-heading: 'Syne', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Transitions */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.6s;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.lightbox-open,
+body.menu-open {
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Desktop Sidebar Navigation (inspired by manurosaleny.es)
+   -------------------------------------------------------------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: 48px 36px 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-link {
+  display: block;
+  margin-bottom: 56px;
+}
+
+.brand-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  text-decoration: none;
+  width: fit-content;
+  transition: color var(--duration-fast) ease;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1.5px;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  transition: color var(--duration-fast) ease;
+  width: fit-content;
+}
+
+.sidebar-instagram svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-primary);
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) ease;
+}
+
+.sidebar-instagram:hover {
+  color: var(--text-primary);
+}
+
+.sidebar-instagram:hover svg {
+  transform: scale(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Navigation Header & Fullscreen Overlay
+   -------------------------------------------------------------------------- */
+.mobile-header {
+  display: none;
+}
+
+.mobile-menu-overlay {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Main Content Layout
+   -------------------------------------------------------------------------- */
+.site-main {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  padding: 64px 64px 120px 64px;
+  max-width: var(--max-content-width);
+}
+
+/* --------------------------------------------------------------------------
+   Photo Grid (inspired by ahmoo.se)
+   -------------------------------------------------------------------------- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gap);
+  align-items: center;
+}
+
+/* Gallery Item Container */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: var(--bg-surface);
+  margin: 0;
+}
+
+/* Natural Aspect Ratio Classes */
+.gallery-item.landscape {
+  aspect-ratio: 3 / 2;
+}
+
+.gallery-item.portrait {
+  aspect-ratio: 2 / 3;
+}
+
+/* Grid Column Spans - Rhythmic Asymmetric Layout */
+.gallery-item.col-12 {
+  grid-column: span 12;
+}
+
+/* Spotlight Portrait centered with generous editorial margins */
+.gallery-item.col-12.portrait {
+  grid-column: 3 / span 8;
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.gallery-item.col-6 {
+  grid-column: span 6;
+}
+
+.gallery-item.col-4 {
+  grid-column: span 4;
+}
+
+/* Gallery Image Presentation */
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-editorial), opacity var(--duration-normal) ease;
+  opacity: 0;
+}
+
+.gallery-item img.is-loaded {
+  opacity: 1;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.02);
+}
+
+/* --------------------------------------------------------------------------
+   Info Page Layout
+   -------------------------------------------------------------------------- */
+.info-main {
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 128px);
+}
+
+.info-container {
+  max-width: 580px;
+  padding: 40px 0;
+}
+
+.info-heading {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 3.25rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  color: var(--text-primary);
+}
+
+.info-text {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin-bottom: 48px;
+}
+
+.info-contact {
+  padding-top: 36px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-contact-label {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.info-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  width: fit-content;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.info-instagram-link svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.info-instagram-link:hover {
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   Fullscreen Lightbox Overlay
+   -------------------------------------------------------------------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-lightbox);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-normal) var(--ease-editorial), visibility var(--duration-normal) var(--ease-editorial);
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 92vw;
+  max-height: 90vh;
+  pointer-events: auto;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 84vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.lightbox-counter {
+  margin-top: 16px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: var(--text-inverse-muted);
+  text-transform: uppercase;
+}
+
+/* Lightbox Navigation & Close Buttons */
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  padding: 0;
+  opacity: 0.75;
+  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 72px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  padding: 0;
+  opacity: 0.75;
+  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.lightbox-prev {
+  left: 20px;
+}
+
+.lightbox-next {
+  right: 20px;
+}
+
+.lightbox-nav:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.12);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --grid-gap: 36px;
+  }
+
+  .site-main {
+    padding: 48px 40px 96px 40px;
+  }
+
+  .gallery-item.col-4 {
+    grid-column: span 6;
+  }
+
+  .gallery-item.col-12.portrait {
+    grid-column: 2 / span 10;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  :root {
+    --grid-gap: 24px;
+  }
+
+  /* Hide Desktop Sidebar */
+  .sidebar {
+    display: none;
+  }
+
+  /* Show Mobile Header */
+  .mobile-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--mobile-header-height);
+    background-color: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 20px;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 200;
+  }
+
+  .mobile-brand {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  /* Burger Menu Button (2 thin lines) */
+  .burger-btn {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 7px;
+    padding: 0;
+    z-index: 300;
+  }
+
+  .burger-line {
+    width: 24px;
+    height: 1.5px;
+    background-color: var(--text-primary);
+    display: block;
+    transition: transform var(--duration-normal) var(--ease-editorial), width var(--duration-normal) var(--ease-editorial);
+    transform-origin: center;
+  }
+
+  .burger-btn.is-active .burger-line:first-child {
+    transform: translateY(4.25px) rotate(45deg);
+    width: 22px;
+  }
+
+  .burger-btn.is-active .burger-line:last-child {
+    transform: translateY(-4.25px) rotate(-45deg);
+    width: 22px;
+  }
+
+  /* Mobile Fullscreen Overlay Menu */
+  .mobile-menu-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    z-index: 250;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 100px 28px 48px 28px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--duration-normal) var(--ease-editorial), visibility var(--duration-normal) var(--ease-editorial);
+  }
+
+  .mobile-menu-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: opacity var(--duration-fast) ease;
+  }
+
+  .mobile-nav-link.active {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+  }
+
+  .mobile-menu-bottom {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+  }
+
+  .mobile-instagram {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+
+  .mobile-instagram svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--text-primary);
+  }
+
+  /* Main Content on Mobile */
+  .site-main {
+    margin-left: 0;
+    padding: calc(var(--mobile-header-height) + 28px) 16px 64px 16px;
+  }
+
+  /* Grid on Mobile: Clean Full Width Stacking */
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .gallery-item.col-12,
+  .gallery-item.col-12.portrait,
+  .gallery-item.col-6,
+  .gallery-item.col-4 {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  /* Info page on mobile */
+  .info-main {
+    min-height: auto;
+    padding-top: 24px;
+  }
+
+  .info-container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .info-heading {
+    font-size: 2.5rem;
+    margin-bottom: 24px;
+  }
+
+  .info-text {
+    font-size: 1.05rem;
+    margin-bottom: 36px;
+  }
+
+  /* Lightbox on Mobile */
+  .lightbox-nav {
+    width: 44px;
+    height: 60px;
+  }
+
+  .lightbox-prev {
+    left: 8px;
+  }
+
+  .lightbox-next {
+    right: 8px;
+  }
+
+  .lightbox-close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .lightbox-img {
+    max-width: 94vw;
+    max-height: 76vh;
+  }
+}
