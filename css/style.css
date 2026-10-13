@@ -124,11 +124,11 @@ button {
 .brand-title {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.5rem;
-  letter-spacing: 0.18em;
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-primary);
-  line-height: 1;
+  line-height: 1.35;
 }
 
 .sidebar-nav {
@@ -270,7 +270,7 @@ button {
   object-fit: cover;
   display: block;
   transition: transform var(--duration-slow) var(--ease-editorial), opacity var(--duration-normal) ease;
-  opacity: 0;
+  opacity: 1;
 }
 
 .gallery-item img.is-loaded {
@@ -302,8 +302,18 @@ button {
   letter-spacing: -0.02em;
   line-height: 1.1;
   text-transform: uppercase;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
   color: var(--text-primary);
+}
+
+.info-author {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 36px;
 }
 
 .info-text {
