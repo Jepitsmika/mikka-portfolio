@@ -124,11 +124,11 @@ button {
 .brand-title {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.15rem;
-  letter-spacing: 0.1em;
+  font-size: 1.5rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-primary);
-  line-height: 1.35;
+  line-height: 1;
 }
 
 .sidebar-nav {
